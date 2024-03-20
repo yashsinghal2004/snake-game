@@ -20,6 +20,7 @@ export default function SnakeGrid() {
     const [food,setFood]=useState<Point>({x:0,y:0});
     const [direction,setDirection]=useState<Direction>("RIGHT");
     const [gameover,setGameover]=useState<boolean>(false);
+    const [score,setScore]=useState<number>(0);
 
     const handleKeyPress=(event:KeyboardEvent<HTMLDivElement>)=>{
         if(event.key==="ArrowUp" && direction!=="DOWN"){
@@ -71,6 +72,8 @@ export default function SnakeGrid() {
 
         if(snakeHead.x===food.x && snakeHead.y===food.y){
             generateFood();
+            setScore(score + 1);
+
         }
         else newSnake.pop();
         setSnake(newSnake);
@@ -92,10 +95,14 @@ export default function SnakeGrid() {
     <div onKeyDown={handleKeyPress}
     tabIndex={0}
     autoFocus
-     className="grid grid-cols-20 grid-rows-20 border border-black ">
+     className="md:grid md:grid-cols-20 md:grid-rows-20 grid grid-cols-15 grid-rows-15 border border-gray-600 ">
+        <div>
+            <p className="text-white ml-3">Score: {score}</p>
+        </div>
         {
             gameover &&(
-                <div className="absolute h-screen inset-0 flex justify-center items-center text-4xl font-bold text-red-600">
+                <div className="absolute h-screen inset-0 flex justify-center items-center
+                 text-4xl font-bold text-red-600 bg-black bg-opacity-70 ">
                     Game Over!
                 </div>
             )
