@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react";
+import { KeyboardEvent, useEffect, useState } from "react";
 
 const GRID_SIZE=20;
 
@@ -9,7 +9,7 @@ type Point={
     y:number
 }
 
-type Direction="UP" | "DOWN" | "LEFT" | "RIGHT"
+type Direction="UP" | "DOWN" | "LEFT" | "RIGHT" | "null"
 
 export default function SnakeGrid() {
     const [snake,setSnake]=useState<Point[]>([
@@ -21,15 +21,28 @@ export default function SnakeGrid() {
     const [direction,setDirection]=useState<Direction>("RIGHT");
     const [gameover,setGameover]=useState<boolean>(false);
 
+    const handleKeyPress=(event:KeyboardEvent<HTMLDivElement>)=>{
+        if(event.key==="ArrowUp" && direction!=="DOWN"){
+            setDirection("UP")
+        }
+        if(event.key==="ArrowDown"&& direction!=="UP"){
+            setDirection("DOWN")
+        }
+        if(event.key==="ArrowLeft"&& direction!=="RIGHT"){
+            setDirection("LEFT")
+        }
+        if(event.key==="ArrowRight"&& direction!=="LEFT"){
+            setDirection("RIGHT")
+        }
+
+    }
+
     const generateFood=()=>{
         const x=Math.floor(Math.random()*GRID_SIZE);
         const y=Math.floor(Math.random()*GRID_SIZE);
         setFood({x,y});
     }
-    useEffect(()=>{
-        const interval=setInterval(moveSnake,60);
-        return ()=>clearInterval(interval);
-    },[snake,direction])
+    
 
     const moveSnake=()=>{
         const newSnake=[...snake];
@@ -52,6 +65,7 @@ export default function SnakeGrid() {
             ||newSnake.some((snakePart)=>snakePart.x===snakeHead.x &&snakePart.y===snakeHead.y)){
                 setGameover(true);
                 return;
+                
         }
         newSnake.unshift(snakeHead);
 
@@ -61,9 +75,24 @@ export default function SnakeGrid() {
         else newSnake.pop();
         setSnake(newSnake);
     }
+    useEffect(()=>{
+        const interval=setInterval(moveSnake,60);
+
+        if(gameover){
+            clearInterval(interval)
+        }
+
+        return ()=>clearInterval(interval);
+    },[snake,direction])
+    useEffect(()=>{
+        generateFood();
+    },[])
 
   return (
-    <div className="grid grid-cols-20 grid-rows-20 border border-black ">
+    <div onKeyDown={handleKeyPress}
+    tabIndex={0}
+    autoFocus
+     className="grid grid-cols-20 grid-rows-20 border border-black ">
         {
             gameover &&(
                 <div className="absolute h-screen inset-0 flex justify-center items-center text-4xl font-bold text-red-600">
