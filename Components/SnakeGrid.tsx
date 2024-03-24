@@ -79,7 +79,7 @@ export default function SnakeGrid() {
         setSnake(newSnake);
     }
     useEffect(()=>{
-        const interval=setInterval(moveSnake,60);
+        const interval=setInterval(moveSnake,80);
 
         if(gameover){
             clearInterval(interval)

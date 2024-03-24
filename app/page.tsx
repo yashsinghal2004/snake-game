@@ -1,17 +1,7 @@
-import SnakeGrid from '@/Components/SnakeGrid'
-import React from 'react'
+"use client"
 
-const page = () => {
-  return (
-      <div className='pt-8 bg-black h-screen'>
-    <div className="flex justify-center items-center text-4xl text-green-700 font-extrabold m-6">Snake Game
+import SnakeGrid from "@/Components/SnakeGrid";
 
-    </div>
-    <div className='flex justify-center items-center'>
-    <SnakeGrid/>
-    </div>
-    </div>
-  )
+export default function Page() {
+  return <SnakeGrid />;
 }
-
-export default page
