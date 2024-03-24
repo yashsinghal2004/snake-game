@@ -1,4 +1,4 @@
-"use client"
+
 
 import SnakeGrid from "@/Components/SnakeGrid";
 
